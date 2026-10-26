@@ -108,3 +108,97 @@ imageDialog.addEventListener('close', () => {
 document.querySelectorAll('.full-case').forEach(caseDetails => caseDetails.addEventListener('toggle', event => {
   if (!event.currentTarget.open) event.currentTarget.querySelector('video')?.pause();
 }));
+
+// Animate once on entry; content remains visible without JavaScript or animation support.
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const runningReveals = new Set();
+if ('IntersectionObserver' in window && typeof Element.prototype.animate === 'function') {
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      revealObserver.unobserve(entry.target);
+      if (reducedMotion.matches || entry.target.contains(document.activeElement)) return;
+      const animation = entry.target.animate([
+        { opacity: 0, transform: 'translateY(14px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ], { duration: 850, delay: entry.target.matches('.skill-row') ? [...entry.target.parentElement.querySelectorAll('.skill-row')].indexOf(entry.target) * 170 : 0, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+      runningReveals.add(animation);
+      animation.finished.catch(() => {}).finally(() => runningReveals.delete(animation));
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.about-topline, .about h2, .about-copy, .about-approach .skill-row, #projects-title, .course-banner, .carousel-header, .media-carousel, .contacts .wrap').forEach(element => revealObserver.observe(element));
+  reducedMotion.addEventListener('change', event => {
+    if (event.matches) runningReveals.forEach(animation => animation.cancel());
+  });
+}
+// Preserve native details semantics, including keyboard activation and no-script fallback.
+if (typeof Element.prototype.animate === 'function') {
+  document.querySelectorAll('.full-case').forEach(details => {
+    const summary = details.querySelector('summary');
+    const content = details.querySelector('.case-content');
+    let animation = null;
+    let expanded = details.open;
+    function settle() {
+      animation?.cancel();
+      animation = null;
+      details.open = expanded;
+      details.style.removeProperty('overflow');
+    }
+    summary.addEventListener('click', event => {
+      if (reducedMotion.matches) return;
+      event.preventDefault();
+      const startHeight = details.getBoundingClientRect().height;
+      animation?.cancel();
+      expanded = !expanded;
+      details.open = true;
+      details.style.overflow = 'hidden';
+      const endHeight = expanded
+        ? details.getBoundingClientRect().height
+        : summary.getBoundingClientRect().height + parseFloat(getComputedStyle(details).borderBottomWidth || '0');
+      animation = details.animate([
+        { height: `${startHeight}px` },
+        { height: `${endHeight}px` }
+      ], { duration: 550, easing: 'cubic-bezier(.22,1,.36,1)' });
+      animation.onfinish = settle;
+    });
+    details.addEventListener('toggle', () => {
+      if (!animation) expanded = details.open;
+    });
+    reducedMotion.addEventListener('change', event => {
+      if (event.matches && animation) settle();
+    });
+    window.addEventListener('resize', () => { if (animation) settle(); });
+  });
+}
+// Show the hint on entering the viewport, without requiring hover.
+if ('IntersectionObserver' in window) {
+  const hintObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('hint-in-view', entry.isIntersecting);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.full-case>summary').forEach(summary => hintObserver.observe(summary));
+} else {
+  document.querySelectorAll('.full-case>summary').forEach(summary => summary.classList.add('hint-in-view'));
+}
+// First-screen sequence plays once when the hero enters view.
+if ('IntersectionObserver' in window && typeof Element.prototype.animate === 'function') {
+  const hero = document.querySelector('.hero');
+  const heroObserver = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    heroObserver.disconnect();
+    if (reducedMotion.matches) return;
+    hero.classList.add('hero-intro-play');
+    function heroAnimate(element, frames, options) {
+      const animation = element.animate(frames, { easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards', ...options });
+      runningReveals.add(animation);
+      animation.finished.catch(() => {}).finally(() => runningReveals.delete(animation));
+    }
+    hero.querySelectorAll('.hero-line').forEach((line, index) => {
+      heroAnimate(line, [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 1700, delay: index * 340 });
+    });
+    heroAnimate(hero.querySelector('.hero-portrait img'), [{ opacity: 0, transform: 'scale(1.025)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 2800, delay: 360 });
+    heroAnimate(hero.querySelector('.asterisk'), [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: 2000, delay: 900 });
+  }, { threshold: 0.08 });
+  heroObserver.observe(hero);
+}

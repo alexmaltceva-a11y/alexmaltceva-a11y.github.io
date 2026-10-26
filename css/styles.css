@@ -36,3 +36,32 @@
 .second-case{margin-top:46px;padding-top:36px;border-top:1px solid var(--line)}.project-case{max-width:900px}.project-case .real-project>h3{margin-top:0}.project-case>.media-carousel{margin:16px 0 10px}.project-case .media-slide video{display:block;width:100%;background:#171719;border-radius:14px}.project-case .media-slide .project-cover{border:0;border-radius:0;height:430px}.project-case .carousel-header{margin-top:24px}
 @media(max-width:760px){.second-case{margin-top:30px;padding-top:26px}.project-case .media-slide .project-cover{height:320px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+.real-project>h3.course-title{display:flex;align-items:center;gap:18px;background:var(--lavender);color:#513b69;border-radius:16px;padding:18px 22px;margin-bottom:18px;font-size:28px;line-height:1.25}.course-number{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:50%;background:var(--lime);color:var(--ink);font-size:14px;letter-spacing:.02em}.course-title>span:last-child{min-width:0}
+@media(max-width:760px){.real-project>h3.course-title{font-size:23px;padding:16px;gap:12px;align-items:flex-start}.course-number{flex-basis:34px;height:34px;font-size:12px}}
+.course-banner{display:flex;align-items:center;gap:18px;background:var(--lavender);color:#513b69;border-radius:16px;padding:18px 22px;margin-bottom:18px}.course-banner-copy{min-width:0}.course-banner .course-format{margin:0 0 7px;font-size:9px;letter-spacing:.09em;color:#654f7c}.course-banner h3.course-title{background:none;margin:0;padding:0;font-size:28px;line-height:1.25;color:inherit;border-radius:0}
+@media(max-width:760px){.course-banner{padding:16px;gap:12px;align-items:flex-start}.course-banner .course-number{margin-top:3px}.course-banner h3.course-title{font-size:23px}.course-banner .course-format{font-size:8px;line-height:1.5}}
+.media-slide .zoom-image:has(.project-cover){aspect-ratio:auto;height:auto}.projects .media-slide img.project-cover{width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
+/* Subtle motion without changing layout or blocking access to content. */
+@media(prefers-reduced-motion:no-preference){
+  .button,.carousel-controls button,.course-banner,.contact-email{transition:background-color .25s ease,color .25s ease,border-color .25s ease,box-shadow .25s ease,transform .25s ease}
+  .full-case[open]>.case-content{animation:details-reveal .35s ease-out}
+  .media-slide:not([hidden]){animation:slide-reveal .3s ease-out}
+  @media(hover:hover){.course-banner:hover{background-color:#e6dff3;box-shadow:0 5px 16px #513b690a}.carousel-controls button:hover:enabled{transform:translateY(-2px)}}
+}
+@keyframes details-reveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slide-reveal{from{opacity:.35}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+.full-case[open]>.case-content{animation:none}.full-case>summary>span{transition:transform .3s ease}
+@media(prefers-reduced-motion:reduce){.full-case>summary>span{transition:none}}
+.full-case>summary{position:relative}.full-case>summary>.details-affordance,.full-case[open]>summary>.details-affordance{position:relative;display:inline-flex;align-items:center;transform:none;transition:none}.full-case .details-symbol{display:inline-block;transition:transform .45s ease}.full-case[open] .details-symbol{transform:rotate(45deg)}.full-case .details-tooltip{position:absolute;right:0;bottom:calc(100% + 9px);display:flex;align-items:center;gap:9px;width:max-content;padding:8px 12px;border:1px solid #d3c6e3;border-radius:12px;background:var(--lavender);color:#513b69;font-size:12px;font-weight:400;box-shadow:0 4px 12px #513b6910;opacity:0;visibility:hidden;transform:translateY(5px);pointer-events:none;transition:opacity .3s ease,transform .3s ease,visibility .3s}.full-case .details-tooltip>span{font-size:18px;transform:none}.full-case:not([open])>summary:is(:hover,:focus-visible) .details-tooltip{opacity:1;visibility:visible;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.full-case .details-tooltip,.full-case .details-symbol{transition:none}}
+.full-case:not([open])>summary.hint-in-view .details-tooltip{opacity:1;visibility:visible;transform:translateY(0)}
+.hero-line{display:inline-block}.hero-line.last-word{display:inline-flex}.hero .hero-line .italic{position:relative;isolation:isolate;background:none;display:inline-block}.hero .hero-line .italic::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--purple);transform-origin:left center}.hero-portrait{overflow:hidden;border-radius:130px 130px 24px 24px}
+@media(prefers-reduced-motion:no-preference){.hero-intro-play .italic::before{animation:hero-highlight 2s cubic-bezier(.22,1,.36,1) .9s backwards}}
+@keyframes hero-highlight{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media(max-width:760px){.hero-portrait{border-radius:100px 100px 20px 20px}}.hero-bottom{position:relative}.hero-guide{height:52px;width:145px;margin:-12px 0 -8px 125px;pointer-events:none}.hero-guide svg{display:block;width:100%;height:100%}.guide-path,.guide-tip{stroke:#806497;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}.guide-path{stroke-dasharray:3 5}.about-guide{display:flex;align-items:center;justify-content:flex-end;gap:12px;width:max-content;margin:20px 0 0 auto;color:#513b69;font-size:12px}.about-guide svg{width:90px;height:70px}.about-guide:hover{color:#29282b}.about-guide:hover .guide-path,.about-guide:hover .guide-tip{stroke:#513b69}
+@media(prefers-reduced-motion:no-preference){.guide-visible .guide-path{animation:guide-arrive 1.4s ease-out both}.guide-visible .guide-tip{animation:guide-tip-arrive .5s ease-out 1s both}}
+@keyframes guide-arrive{from{opacity:0;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes guide-tip-arrive{from{opacity:0}to{opacity:1}}
+@media(max-width:760px){.hero-guide{width:110px;height:45px;margin:-8px 0 -4px 100px}.about-guide{margin-top:18px}.about-guide svg{width:70px;height:58px}}
