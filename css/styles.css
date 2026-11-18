@@ -65,3 +65,4 @@
 @keyframes guide-arrive{from{opacity:0;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
 @keyframes guide-tip-arrive{from{opacity:0}to{opacity:1}}
 @media(max-width:760px){.hero-guide{width:110px;height:45px;margin:-8px 0 -4px 100px}.about-guide{margin-top:18px}.about-guide svg{width:70px;height:58px}}
+.projects .media-slide img.training-slide{width:100%;height:auto;max-height:none;aspect-ratio:16/9;object-fit:contain}
